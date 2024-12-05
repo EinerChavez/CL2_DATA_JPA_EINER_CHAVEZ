@@ -1,31 +1,32 @@
 package pe.edu.cibertec.spring_mvc_jyd.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 
-@Data
 @Entity
-@Table(name = "city")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class City {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "city_id")
     private Integer cityId;
 
-    @Column(name = "city", length = 50, nullable = false)
+    @Column(nullable = false, length = 50)
     private String city;
 
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
-    @Column(name = "last_update", nullable = false)
-    private Timestamp lastUpdate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdate;
 
-    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL)
-    private Set<Address> addresses;
+    @OneToMany(mappedBy = "city")
+    private List<Address> addressList;
 }

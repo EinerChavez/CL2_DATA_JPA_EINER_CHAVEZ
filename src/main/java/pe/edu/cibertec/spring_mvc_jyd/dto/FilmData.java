@@ -1,9 +1,6 @@
 package pe.edu.cibertec.spring_mvc_jyd.dto;
 
-import java.util.Date;
-
-public record FilmDetailDto(
-        Integer filmId,
+public record FilmData(
         String title,
         String description,
         Integer releaseYear,
@@ -13,6 +10,6 @@ public record FilmDetailDto(
         Double replacementCost,
         String rating,
         String specialFeatures,
-        Date lastUpdate
+        Integer languageId
 ) {
 }

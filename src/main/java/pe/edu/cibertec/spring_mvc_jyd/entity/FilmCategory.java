@@ -1,29 +1,24 @@
 package pe.edu.cibertec.spring_mvc_jyd.entity;
 
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
-@Data
 @Entity
-@Table(name = "film_category")
-@IdClass(FilmCategoryId.class)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class FilmCategory {
+    @EmbeddedId
+    private FilmCategoryId id;
 
-    @Id
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdate;
+
     @ManyToOne
-    @JoinColumn(name = "film_id", nullable = false)
+    @JoinColumn(name = "film_id", insertable = false, updatable = false)
     private Film film;
-
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
-
-    @Column(name = "last_update", nullable = false)
-    private Timestamp lastUpdate;
 }
-

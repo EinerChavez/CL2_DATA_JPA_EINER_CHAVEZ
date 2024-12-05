@@ -1,31 +1,29 @@
 package pe.edu.cibertec.spring_mvc_jyd.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
-import java.util.Set;
 
-@Data
 @Entity
 @Table(name = "actor")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Actor {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
     @Column(name = "actor_id")
-    private Integer actorId;
+    private Short actorId;
 
-    @Column(name = "first_name", length = 45, nullable = false)
+    @Column(name = "first_name", nullable = false, length = 45)
     private String firstName;
 
-    @Column(name = "last_name", length = 45, nullable = false)
+    @Column(name = "last_name", nullable = false, length = 45)
     private String lastName;
 
-    @Column(name = "last_update", nullable = false)
+    @Column(name = "last_update", nullable = false, updatable = false)
     private Timestamp lastUpdate;
-
-    @OneToMany(mappedBy = "actor", cascade = CascadeType.ALL)
-    private Set<FilmActor> filmActors;
 }
-

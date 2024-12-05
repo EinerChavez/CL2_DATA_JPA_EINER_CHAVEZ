@@ -1,27 +1,25 @@
 package pe.edu.cibertec.spring_mvc_jyd.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Set;
+import java.util.Date;
 
-@Data
 @Entity
-@Table(name = "category")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Integer categoryId;
+    private Short categoryId;
 
-    @Column(name = "name", length = 25, nullable = false)
+    @Column(length = 25, nullable = false)
     private String name;
 
-    @Column(name = "last_update", nullable = false)
-    private Timestamp lastUpdate;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private Set<FilmCategory> filmCategories;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    private Date lastUpdate;
 }

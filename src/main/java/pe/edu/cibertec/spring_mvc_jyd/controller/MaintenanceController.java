@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pe.edu.cibertec.spring_mvc_jyd.dto.FilmData;
 import pe.edu.cibertec.spring_mvc_jyd.dto.FilmDetailDto;
 import pe.edu.cibertec.spring_mvc_jyd.dto.FilmDto;
+import pe.edu.cibertec.spring_mvc_jyd.dto.LanguageDto;
+import pe.edu.cibertec.spring_mvc_jyd.service.MaintenanceLanguage;
 import pe.edu.cibertec.spring_mvc_jyd.service.MaintenanceService;
 
 import java.util.List;
@@ -13,52 +16,67 @@ import java.util.List;
 @Controller
 @RequestMapping("/maintenance")
 public class MaintenanceController {
+    @Autowired
+    MaintenanceService maintenanceService;
 
     @Autowired
-    private MaintenanceService maintenanceService;
+    MaintenanceLanguage maintenanceLanguage;
 
-    // Mostrar todos los films
     @GetMapping("/start")
     public String start(Model model) {
         List<FilmDto> films = maintenanceService.findAllFilms();
         model.addAttribute("films", films);
-        return "maintenance"; // Vista donde se muestra el listado de películas
+        return "maintenance";
     }
 
-    // Mostrar detalles de un film específico
+    @GetMapping("/create")
+    public String showCreate(Model model) {
+        List<LanguageDto> languages = maintenanceLanguage.findAllLanguages();
+        model.addAttribute("languages", languages);
+
+        return "maintenance-create";
+    }
+
+    @PostMapping("/createFilm")
+    public String createFilm(@ModelAttribute FilmData filmData, Model model) {
+        try {
+            maintenanceService.createFilm(filmData);
+            return "redirect:/maintenance/start";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "maintenance-create";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Ocurrió un error inesperado al crear la película.");
+            return "maintenance-create";
+        }
+    }
+
     @GetMapping("/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
         FilmDetailDto filmDetailDto = maintenanceService.findDetailById(id);
         model.addAttribute("film", filmDetailDto);
-        return "maintenance-detail"; // Vista con los detalles del film
+        return "maintenance-detail";
     }
 
-    // Editar un film
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         FilmDetailDto filmDetailDto = maintenanceService.findDetailById(id);
         model.addAttribute("film", filmDetailDto);
-        return "maintenance-edit"; // Vista para editar la película
+        return "maintenance-edit";
     }
 
-    // Confirmar la edición de un film
     @PostMapping("/edit-confirm")
-    public String editConfirm(@ModelAttribute FilmDetailDto film) {
+    public String edit(@ModelAttribute FilmDetailDto film) {
         maintenanceService.updateFilm(film);
-        return "redirect:/maintenance/start"; // Redirigir al listado después de la edición
+        return "redirect:/maintenance/start";
     }
 
-    // Eliminar un film
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable Integer id, Model model) {
-        boolean success = maintenanceService.deleteFilm(id);
-        if (success) {
-            return "redirect:/maintenance/start"; // Redirigir al listado después de la eliminación
-        } else {
-            model.addAttribute("error", "No se pudo eliminar el film.");
-            List<FilmDto> films = maintenanceService.findAllFilms();
-            model.addAttribute("films", films);
-            return "maintenance"; // Volver al listado si falla la eliminación
-        }
+        Boolean resultado = maintenanceService.deleteFilm(id);
+        String message = resultado ? "Eliminacion exitosa" : "No se encontró valor o error en algun punto" ;
+
+        model.addAttribute("message", message);
+        return "redirect:/maintenance/start";
     }
 }

@@ -20,20 +20,15 @@ public class HikariCpConfig {
 
     @Bean
     public HikariDataSource hikariDataSource() {
-
         HikariConfig config = new HikariConfig();
-
         config.setJdbcUrl(dbSakilaUrl);
         config.setUsername(dbSakilaUser);
         config.setPassword(dbSakilaPass);
         config.setDriverClassName(dbSakilaDriver);
-
-
         config.setMaximumPoolSize(20);
         config.setMinimumIdle(5);
         config.setIdleTimeout(300000);
         config.setConnectionTimeout(30000);
-
         System.out.println("###### HikariCP initialized ######");
         return new HikariDataSource(config);
 

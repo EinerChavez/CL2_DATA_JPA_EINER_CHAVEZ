@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Language {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer languageId;
@@ -22,5 +21,4 @@ public class Language {
 
     @OneToMany(mappedBy = "language")
     private List<Film> films;
-
 }

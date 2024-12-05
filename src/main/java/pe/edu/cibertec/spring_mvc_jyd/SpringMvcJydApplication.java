@@ -8,8 +8,6 @@ import org.springframework.cache.annotation.EnableCaching;
 import pe.edu.cibertec.spring_mvc_jyd.entity.Film;
 import pe.edu.cibertec.spring_mvc_jyd.repository.FilmRepository;
 
-import java.util.Optional;
-
 @SpringBootApplication
 @EnableCaching
 public class SpringMvcJydApplication  implements CommandLineRunner {

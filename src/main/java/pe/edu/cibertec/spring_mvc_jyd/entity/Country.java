@@ -1,27 +1,28 @@
 package pe.edu.cibertec.spring_mvc_jyd.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
 
-@Data
 @Entity
-@Table(name = "country")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Country {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "country_id")
     private Integer countryId;
 
-    @Column(name = "country", length = 50, nullable = false)
+    @Column(nullable = false, length = 50)
     private String country;
 
-    @Column(name = "last_update", nullable = false)
-    private Timestamp lastUpdate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdate;
 
-    @OneToMany(mappedBy = "country", cascade = CascadeType.ALL)
-    private Set<City> cities;
+    @OneToMany(mappedBy = "country")
+    private List<City> cityList;
 }
